@@ -16,7 +16,7 @@ checksum = "4ae1e9c6caefb8e1fb1be731642c99a7d5803d2282ee890f78dce35aeee988b2"
 
 [[package]]
 name = "jsdom"
-version = "0.0.1"
+version = "0.0.2"
 dependencies = [
  "resast",
  "ressa",
