@@ -7,6 +7,7 @@ use std::collections::HashSet;
 #[cfg(feature = "hashbrown")]
 use hashbrown::HashSet;
 
+
 /// extract all links that are created from a js script
 #[cfg(not(feature = "tokio"))]
 pub fn extract_links<T: PartialEq + Eq + std::hash::Hash + From<String>>(
@@ -14,29 +15,13 @@ pub fn extract_links<T: PartialEq + Eq + std::hash::Hash + From<String>>(
 ) -> HashSet<T> {
     let mut map = HashSet::new();
 
-    match Parser::new(&script) {
+    match Parser::new(&Box::new(script)) {
         Ok(p) => {
             for part in p {
                 match part {
                     Ok(program) => {
                         // entry script program
                         match program {
-                            // ProgramPart::Decl(Decl::Var(VarKind::Var, _var_decl)) => {
-                            //     for variable in var_decl {
-                            //         // start of variables capture into tree backed collection
-                            //         match variable.init {
-                            //             indent => match indent {
-                            //                 Some(exp) => match exp {
-                            //                     Expr::Array(_) => {
-                            //                     }
-                            //                     _ => (),
-                            //                 },
-                            //                 _ => (),
-                            //             },
-                            //         }
-                            //     }
-                            // }
-                            // ProgramPart::Decl(Decl::Class(_)) => {}
                             ProgramPart::Stmt(stmt) => {
                                 match stmt {
                                     Stmt::Expr(expression) => {
@@ -129,7 +114,6 @@ pub async fn extract_links<T: PartialEq + Eq + std::hash::Hash + From<String>>(
 
     match Parser::new(&Box::new(script)) {
         Ok(p) => {
-            tokio::task::yield_now().await;
             let mut stream = tokio_stream::iter(p);
 
             while let Some(part) = stream.next().await {
@@ -137,22 +121,6 @@ pub async fn extract_links<T: PartialEq + Eq + std::hash::Hash + From<String>>(
                     Ok(program) => {
                         // entry script program
                         match program {
-                            // ProgramPart::Decl(Decl::Var(VarKind::Var, _var_decl)) => {
-                            //     for variable in var_decl {
-                            //         // start of variables capture into tree backed collection
-                            //         match variable.init {
-                            //             indent => match indent {
-                            //                 Some(exp) => match exp {
-                            //                     Expr::Array(_) => {
-                            //                     }
-                            //                     _ => (),
-                            //                 },
-                            //                 _ => (),
-                            //             },
-                            //         }
-                            //     }
-                            // }
-                            // ProgramPart::Decl(Decl::Class(_)) => {}
                             ProgramPart::Stmt(stmt) => {
                                 match stmt {
                                     Stmt::Expr(expression) => {
