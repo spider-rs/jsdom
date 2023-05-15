@@ -1,6 +1,6 @@
 [package]
 name = "jsdom"
-version = "0.0.3"
+version = "0.0.6"
 edition = "2021"
 license = "MIT"
 description = "A rust javascript dom parser for web scraping"
@@ -13,7 +13,10 @@ repository = "https://github.com/a11ywatch/jsdom"
 resast = "0.5.0"
 ressa = "0.8.2"
 hashbrown = { version = "0.13.2", default-features = true, optional = true }
+tokio-stream = { version = "0.1.12", optional = true }
+tokio = { version = "1.28.1", features = [ "rt-multi-thread", "macros", "parking_lot" ], optional = true }
 
 [features]
 default = []
 hashbrown = ["dep:hashbrown"]
+tokio = [ "dep:tokio", "dep:tokio-stream" ]
