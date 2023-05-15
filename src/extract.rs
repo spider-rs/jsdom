@@ -1,12 +1,11 @@
 use resast::{prelude::*, stmt::Stmt, ProgramPart};
-use ressa::*;
+use ressa_r::*;
 
 #[cfg(not(feature = "hashbrown"))]
 use std::collections::HashSet;
 
 #[cfg(feature = "hashbrown")]
 use hashbrown::HashSet;
-
 
 /// extract all links that are created from a js script
 #[cfg(not(feature = "tokio"))]
@@ -38,7 +37,6 @@ pub fn extract_links<T: PartialEq + Eq + std::hash::Hash + From<String>>(
                                                             match left {
                                                                 AssignLeft::Expr(exp) => {
                                                                     match *exp {
-                                                                        Expr::Ident(_idt) => {}
                                                                         Expr::Member(mexp) => {
                                                                             match mexp {
                                                                                 MemberExpr {
@@ -137,7 +135,6 @@ pub async fn extract_links<T: PartialEq + Eq + std::hash::Hash + From<String>>(
                                                             match left {
                                                                 AssignLeft::Expr(exp) => {
                                                                     match *exp {
-                                                                        Expr::Ident(_idt) => {}
                                                                         Expr::Member(mexp) => {
                                                                             match mexp {
                                                                                 MemberExpr {
