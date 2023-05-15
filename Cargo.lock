@@ -3,6 +3,17 @@
 version = 3
 
 [[package]]
+name = "ahash"
+version = "0.8.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2c99f64d1e06488f620f932677e24bc6e2897582980441ae90a671415bd7ec2f"
+dependencies = [
+ "cfg-if",
+ "once_cell",
+ "version_check",
+]
+
+[[package]]
 name = "cfg-if"
 version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -15,9 +26,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4ae1e9c6caefb8e1fb1be731642c99a7d5803d2282ee890f78dce35aeee988b2"
 
 [[package]]
-name = "jsdom"
-version = "0.0.2"
+name = "hashbrown"
+version = "0.13.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "43a3c133739dddd0d2990f9a4bdf8eb4b21ef50e4851ca85ab661199821d510e"
 dependencies = [
+ "ahash",
+]
+
+[[package]]
+name = "jsdom"
+version = "0.0.3"
+dependencies = [
+ "hashbrown",
  "resast",
  "ressa",
 ]
@@ -45,9 +66,9 @@ checksum = "e0a7ae3ac2f1173085d398531c705756c94a4c56843785df85a60c1a0afac116"
 
 [[package]]
 name = "proc-macro2"
-version = "1.0.56"
+version = "1.0.57"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2b63bdb0cd06f1f4dedf69b254734f9b45af66e4a031e42a7480257d9898b435"
+checksum = "c4ec6d5fe0b140acb27c9a0444118cf55bfbb4e0b259739429abb4521dd67c16"
 dependencies = [
  "unicode-ident",
 ]
@@ -89,9 +110,9 @@ dependencies = [
 
 [[package]]
 name = "ressa"
-version = "0.8.1"
+version = "0.8.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c752a4a66d2373cd3049f116cd21210d929f0a61acf4e8a351a4cc2c35988273"
+checksum = "bfb9cd91fd77ad17b59d6a9924b106d66331409b2114eb1764de079b35a68ce5"
 dependencies = [
  "hash-chain",
  "log",
@@ -196,3 +217,9 @@ name = "unicode-xid"
 version = "0.2.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f962df74c8c05a667b5ee8bcf162993134c104e96440b663c8daa176dc772d8c"
+
+[[package]]
+name = "version_check"
+version = "0.9.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "49874b5167b65d7193b8aba1567f5c7d93d001cafc34600cee003eda787e483f"

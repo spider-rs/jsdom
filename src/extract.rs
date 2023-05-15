@@ -1,7 +1,12 @@
-use std::collections::HashSet;
-
 use resast::{prelude::*, stmt::Stmt, ProgramPart};
 use ressa::*;
+
+#[cfg(not(feature = "hashbrown"))]
+use std::collections::HashSet;
+
+
+#[cfg(feature = "hashbrown")]
+use hashbrown::HashSet;
 
 /// extract all links that are created from a js script
 pub fn extract_links<T: PartialEq + Eq + std::hash::Hash + From<String>>(
