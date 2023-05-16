@@ -51,7 +51,6 @@ fn parse_e() {
     assert!(!links.contains("https://a11ywatch.com"))
 }
 
-
 #[cfg(all(feature = "hashbrown", feature = "tokio"))]
 #[tokio::test]
 async fn parse_e() {
