@@ -24,7 +24,10 @@ fn parse_links() {
 
 ## Features
 
-Currently the package will rollout features that are most important for web scraping.
+This package will rollout features that are most important for web scraping first.
+
+1. `hashbrown`: Enable the hashbrown crate.
+1. `tokio`: Enable tokio streaming utils.
 
 ### Stage 0.1
 
