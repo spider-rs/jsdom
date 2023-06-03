@@ -63,11 +63,11 @@ dependencies = [
 
 [[package]]
 name = "jsdom"
-version = "0.0.9"
+version = "0.0.10"
 dependencies = [
  "hashbrown",
  "resast",
- "ressa_r",
+ "ressa",
  "tokio",
  "tokio-stream",
 ]
@@ -181,9 +181,9 @@ dependencies = [
 
 [[package]]
 name = "resast"
-version = "0.5.0"
+version = "0.6.0-alpha.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dce018f9b95f19dd2df5c883fd6d394001ec093a72e0f8ea57b43612cf1f0827"
+checksum = "a203dc662f42294a9be39dcb6f2262c18418aaac0cf95d0f6d39b8b3a5401c64"
 
 [[package]]
 name = "ress"
@@ -196,10 +196,10 @@ dependencies = [
 ]
 
 [[package]]
-name = "ressa_r"
-version = "0.8.4"
+name = "ressa"
+version = "0.9.0-alpha.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "56b22c922630fd506d5f5d12214f1ce4c24622e86ad819ec76247b8e4ad56f46"
+checksum = "2dc034cc4536b5b0724c52d08d109940d86bd75a76ea771e9e0596969d259464"
 dependencies = [
  "hash-chain",
  "log",
