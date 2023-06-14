@@ -1,5 +1,6 @@
 use resast::{prelude::*, stmt::Stmt, ProgramPart};
-use ressa_r::*;
+use ressa::*;
+use std::borrow::Cow;
 
 #[cfg(not(feature = "hashbrown"))]
 use std::collections::HashSet;
@@ -50,7 +51,7 @@ pub async fn extract_links<T: PartialEq + Eq + std::hash::Hash + From<String>>(
 
 /// parse and extract links
 fn _extract_links<T: PartialEq + Eq + std::hash::Hash + From<String>>(
-    part: Result<ProgramPart, Error>,
+    part: Result<ProgramPart<Cow<str>>, Error>,
     map: &mut HashSet<T>,
 ) {
     match part {

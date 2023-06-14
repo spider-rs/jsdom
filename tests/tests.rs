@@ -100,3 +100,14 @@ async fn parse_links() {
 
     assert!(links.contains("https://a11ywatch.com"))
 }
+
+#[cfg(feature = "tokio")]
+#[tokio::test]
+async fn parse_links_spawn() {
+    use hashbrown::HashSet;
+    tokio::spawn(async move {
+        let links: HashSet<String> = extract_links(SCRIPT).await;
+
+        assert!(links.contains("https://a11ywatch.com"))
+    });
+}
