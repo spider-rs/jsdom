@@ -1,6 +1,6 @@
 # jsdom
 
-A fast javascript dom parser for rust built for web scraping.
+A fast javascript dom parser for web scraping.
 
 `cargo add jsdom`
 
