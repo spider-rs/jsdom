@@ -18,7 +18,7 @@ pub fn extract_links<T: PartialEq + Eq + std::hash::Hash + From<String>>(
     match Parser::new(&Box::new(script)) {
         Ok(p) => {
             for part in p {
-                _extract_links(part, &mut map);
+                let _ = _extract_links(part, &mut map); // can match to know if insert succeeded
             }
         }
         _ => (),
@@ -50,87 +50,64 @@ pub async fn extract_links<T: PartialEq + Eq + std::hash::Hash + From<String>>(
 }
 
 /// parse and extract links
+/// using option instead of result as we do not care why the operation failed
 fn _extract_links<T: PartialEq + Eq + std::hash::Hash + From<String>>(
     part: Result<ProgramPart<Cow<str>>, Error>,
     map: &mut HashSet<T>,
-) {
-    match part {
-        Ok(program) => {
-            // entry script program
-            match program {
-                ProgramPart::Stmt(stmt) => {
-                    match stmt {
-                        Stmt::Expr(expression) => {
-                            match expression {
-                                resast::expr::Expr::Assign(assign) => {
-                                    match assign {
-                                        AssignExpr {
-                                            operator,
-                                            left,
-                                            right,
-                                        } => {
-                                            // assignment to create node
-                                            if operator == AssignOp::Equal {
-                                                match left {
-                                                    AssignLeft::Expr(exp) => {
-                                                        match *exp {
-                                                            Expr::Member(mexp) => {
-                                                                match mexp {
-                                                                    MemberExpr {
-                                                                        object: _,
-                                                                        property,
-                                                                        computed,
-                                                                    } => {
-                                                                        if !computed {
-                                                                            match *property {
-                                                                                Expr::Ident(
-                                                                                    ident,
-                                                                                ) => {
-                                                                                    // links
-                                                                                    if ident.name
-                                                                                        == "href"
-                                                                                    {
-                                                                                        match *right {
-                                                                                            Expr::Lit(value) => {
-                                                                                                match value {
-                                                                                                    Lit::String(string_lit) => {
-                                                                                                        match string_lit {
-                                                                                                            StringLit::Double(value) | StringLit::Single(value) => {
-                                                                                                                map.insert(value.to_string().into());
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }
-                                                                                                    _ => ()
-                                                                                                }
-                                                                                            },
-                                                                                            _ => ()
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                                _ => (),
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                            _ => (),
-                                                        }
-                                                    }
-                                                    _ => (),
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                _ => (),
-                            }
-                        }
-                        _ => (),
-                    }
+) -> Option<()> {
+    let program = part.ok()?;
+
+    let stmt = match program {
+        ProgramPart::Stmt(stmt) => Some(stmt),
+        _ => None,
+    }?;
+
+    let expr = match stmt {
+        Stmt::Expr(expr) => Some(expr),
+        _ => None,
+    }?;
+
+    let assign = match expr {
+        resast::expr::Expr::Assign(a) => Some(a),
+        _ => None,
+    }?;
+
+    if assign.operator != AssignOp::Equal {
+        return None;
+    }
+
+    let exp = match assign.left {
+        AssignLeft::Expr(exp) => Some(exp),
+        _ => None,
+    }?;
+
+    let mexp = match *exp {
+        Expr::Member(mexp) => Some(mexp),
+        _ => None,
+    }?;
+
+    if mexp.computed {
+        return None;
+    }
+
+    match *mexp.property {
+        Expr::Ident(ident) if ident.name == "href" => {
+            let literal = match *assign.right {
+                Expr::Lit(value) => Some(value),
+                _ => None,
+            }?;
+            let s = match literal {
+                Lit::String(s) => Some(s),
+                _ => None,
+            }?;
+
+            match s {
+                StringLit::Double(v) | StringLit::Single(v) => {
+                    map.insert(v.to_string().into());
+                    Some(())
                 }
-                _ => (),
             }
         }
-        _ => (),
-    };
+        _ => None,
+    }
 }
